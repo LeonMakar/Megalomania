@@ -4,8 +4,8 @@ public class WoodArea : Area
 {
     public override void SetWorkersToArea()
     {
-        Debug.Log("Set Worker To Wood Area");
 
-
+        SetNewTextAsync("Set Worker To Wood Area").Forget();
+        CitizenConroller.SetCitizenToWork(WorkType);
     }
 }
