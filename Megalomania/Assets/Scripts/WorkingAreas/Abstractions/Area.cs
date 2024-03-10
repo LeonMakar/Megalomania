@@ -1,25 +1,38 @@
+using Cysharp.Threading.Tasks;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using Zenject;
 
-public class Area : MonoBehaviour, IPointerUpHandler, IPointerMoveHandler, IPointerDownHandler
+public class Area : MonoBehaviour, IPointerClickHandler
 {
+    [SerializeField] protected WorkType WorkType;
+    
+    protected TextMeshProUGUI Notation;
+    protected CitizenController CitizenConroller;
 
-    public void OnPointerDown(PointerEventData eventData)
+    [Inject]
+    private void Construct(TextMeshProUGUI text, CitizenController citizenController)
+    {
+        Notation = text;
+        CitizenConroller = citizenController;
+    }
+
+    public void OnPointerClick(PointerEventData eventData)
     {
         SetWorkersToArea();
+
     }
 
 
-    public void OnPointerMove(PointerEventData eventData)
+    public virtual void SetWorkersToArea()
     {
-        
     }
 
-    public void OnPointerUp(PointerEventData eventData)
+    protected async UniTaskVoid SetNewTextAsync(string text)
     {
-       
-    }
-
-    public virtual void SetWorkersToArea() { 
+        Notation.text = text;
+        await UniTask.Delay(2000);
+        Notation.text = "";
     }
 }

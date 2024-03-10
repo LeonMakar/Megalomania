@@ -4,8 +4,7 @@ public class StoneArea : Area
 {
     public override void SetWorkersToArea()
     {
-        Debug.Log("Set Worker To Stone Area");
-
-
+        SetNewTextAsync("Set Worker To Stone Area").Forget();
+        CitizenConroller.SetCitizenToWork(WorkType);
     }
 }
