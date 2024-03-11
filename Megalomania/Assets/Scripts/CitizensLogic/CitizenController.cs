@@ -5,10 +5,12 @@ public class CitizenController
 {
     private List<Citizen> _citizensList = new List<Citizen>();
     private Citizen.Factory _citizenFactory;
+    private EventBus _eventBus;
 
-    public CitizenController(Citizen.Factory factory)
+    public CitizenController(Citizen.Factory factory, EventBus eventBus)
     {
         _citizenFactory = factory;
+        _eventBus = eventBus;
 
         _citizensList.Add(_citizenFactory.Create());
     }
@@ -17,6 +19,7 @@ public class CitizenController
     {
         var citizen = _citizensList.FirstOrDefault();
         citizen.ChangeWorkCondition(workType).Forget();
+        _eventBus.Invoke(new OnSetWorkToCitizenSignal(false));
     }
 
 }

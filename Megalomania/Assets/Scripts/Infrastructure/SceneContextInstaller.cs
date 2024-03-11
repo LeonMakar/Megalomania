@@ -19,7 +19,25 @@ public class SceneContextInstaller : MonoInstaller
         BindStoneText();
         BindCitizenFactory();
         BindGameToken();
+        BindEventBus();
+        BindResourcesStorage();
 
+    }
+
+    private void BindResourcesStorage()
+    {
+        Container
+            .Bind<ResourcesStorage>()
+            .AsSingle()
+            .NonLazy();
+    }
+
+    private void BindEventBus()
+    {
+        Container
+            .Bind<EventBus>()
+            .AsSingle()
+            .NonLazy();
     }
 
     private void BindGameToken()
