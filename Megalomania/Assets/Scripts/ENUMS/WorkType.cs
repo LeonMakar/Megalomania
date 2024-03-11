@@ -1,4 +1,4 @@
-public enum WorkType 
+public enum WorkType
 {
     WoodWork,
     StoneWork,

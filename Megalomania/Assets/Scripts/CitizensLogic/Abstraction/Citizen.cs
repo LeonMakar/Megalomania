@@ -8,16 +8,20 @@ public class Citizen
     private WoodText _woodText;
     private GameMainData _gameMainData;
     private CancellationTokenSource _cancellatinToken;
+    private ResourcesStorage _resourcesStorage;
     private bool _canMining = true;
+    private ResourcesType _generatingType;
 
 
-    public Citizen(StoneText stoneText, WoodText woodText, GameMainData gameMainData, GameToken gameToken)
+    public Citizen(StoneText stoneText, WoodText woodText, GameMainData gameMainData, GameToken gameToken, ResourcesStorage storage)
     {
         _stoneText = stoneText;
         _woodText = woodText;
         _gameMainData = gameMainData;
         _cancellatinToken = new CancellationTokenSource();
+        _resourcesStorage = storage;
         gameToken.OnGameTokenDestroy += CancelAsyncMethods;
+
     }
 
     public void SetWorkToCitizen(WorkType workType)
@@ -49,10 +53,20 @@ public class Citizen
 
     private async UniTask GainingResourcesAsync(UiResoucres uiResoucresType, int resourcesAddingDelay, float resourcesAddingValue)
     {
+        switch (uiResoucresType.GetType().Name)
+        {
+            case nameof(StoneText):
+                _generatingType = ResourcesType.Stone;
+                break;
+            case nameof(WoodText):
+                _generatingType = ResourcesType.Wood;
+                break;
+        }
         while (_canMining)
         {
             await UniTask.Delay(resourcesAddingDelay, true, PlayerLoopTiming.Update, _cancellatinToken.Token);
             uiResoucresType.ResourcesCount += resourcesAddingValue;
+            _resourcesStorage.AddResource(_generatingType, resourcesAddingValue);
             uiResoucresType.SetNewText();
         }
 
