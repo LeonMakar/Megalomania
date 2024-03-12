@@ -1,4 +1,3 @@
-
 using UnityEngine;
 using Zenject;
 
@@ -15,14 +14,16 @@ public class CitizenIconFactory : MonoBehaviour
     }
 
 
-    public void Create()
+    public void CreateCommand()
     {
         _eventBus.Invoke(new OnSetWorkToCitizenSignal(true));
         var icon = Instantiate(CitizenIcon, ParentObject);
-        icon.transform.position = Input.mousePosition;
+        icon.transform.position = transform.position;
     }
-
-
-
-
+    public void CreateResetCommand()
+    {
+        _eventBus.Invoke(new OnResetWorkOfCitizenSignal(true));
+        var icon = Instantiate(CitizenIcon, ParentObject);
+        icon.transform.position = transform.position;
+    }
 }

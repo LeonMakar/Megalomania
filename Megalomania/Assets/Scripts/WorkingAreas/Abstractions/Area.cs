@@ -4,16 +4,21 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public class Area : MonoBehaviour, IPointerClickHandler
+public abstract class Area : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] protected WorkType WorkType;
 
     protected TextMeshProUGUI Notation;
     protected CitizenController CitizenConroller;
     protected bool _isCitizenSelected = false;
-
+    private bool _isCanResetWork = false;
     protected EventBus EventBus;
+    protected Collider2D Collider2d;
 
+    private void Awake()
+    {
+        Collider2d = GetComponent<Collider2D>();
+    }
     [Inject]
     private void Construct(TextMeshProUGUI text, CitizenController citizenController, EventBus eventBus)
     {
@@ -23,23 +28,30 @@ public class Area : MonoBehaviour, IPointerClickHandler
 
 
         EventBus.Subscrube<OnSetWorkToCitizenSignal>(SetAvailabilityToWork);
+        EventBus.Subscrube<OnResetWorkOfCitizenSignal>(SetAvailabilityToResetWork);
     }
 
-
     private void SetAvailabilityToWork(OnSetWorkToCitizenSignal signal) => _isCitizenSelected = signal.IsCitizenSelected;
+    private void SetAvailabilityToResetWork(OnResetWorkOfCitizenSignal signal) => _isCanResetWork = signal.CanResetCitizenWork;
     public void OnPointerClick(PointerEventData eventData)
     {
         if (_isCitizenSelected)
             SetWorkersToArea();
+
+        if (_isCanResetWork)
+            ResetWork();
+
     }
 
 
+
     public virtual void SetWorkersToArea() { }
+    public virtual void ResetWork() { }
 
     protected async UniTaskVoid SetNewTextAsync(string text)
     {
         Notation.text = text;
         await UniTask.Delay(2000);
-        Notation.text = "";
+        Notation.text = string.Empty;
     }
 }

@@ -1,15 +1,21 @@
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 public class UiResoucres : MonoBehaviour
 {
     public TextMeshProUGUI Text;
-    public float ResourcesCount;
     protected string ResourcesType;
+    protected ResourcesStorage Storage;
 
-    public void SetNewText()
+    [Inject]
+    private void Construct(ResourcesStorage storage)
     {
-        Text.text = $"{ResourcesType} {ResourcesCount}";
+        Storage = storage;
+    }
+    public void SetNewText(int resourcesValue)
+    {
+        Text.text = $"{ResourcesType} {resourcesValue}";
     }
 
 }

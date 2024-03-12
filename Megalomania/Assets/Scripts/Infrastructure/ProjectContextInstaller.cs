@@ -2,17 +2,21 @@ using UnityEngine;
 using Zenject;
 public class ProjectContextInstaller : MonoInstaller
 {
-    [SerializeField] private GameMainData _gameMainData;
+    [SerializeField] private Navigation _citizenSimulatorGameObject;
+    private CitizenSimulatorFactory _citizenSimulatorFactory;
+
     public override void InstallBindings()
     {
-        BindGameMainData();
+        _citizenSimulatorFactory = new CitizenSimulatorFactory(_citizenSimulatorGameObject);
+
+        BindCitizenSimulationFactory();
     }
 
-    private void BindGameMainData()
+    private void BindCitizenSimulationFactory()
     {
         Container
-            .Bind<GameMainData>()
-            .FromInstance(_gameMainData)
+            .Bind<CitizenSimulatorFactory>()
+            .FromInstance(_citizenSimulatorFactory)
             .AsSingle()
             .NonLazy();
     }

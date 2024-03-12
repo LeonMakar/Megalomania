@@ -2,5 +2,6 @@
 {
     Wood,
     Stone,
-    Citizen
+    Citizen,
+    Warrior
 }
