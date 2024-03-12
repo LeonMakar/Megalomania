@@ -16,5 +16,9 @@ public class GameMainData : ScriptableObject
     [Tooltip("How often stone will mine (In milliseconds)")]
     public int StoneAddingInterval;
 
+    public int MinutesForCurrentLvl;
+    public int EnemysForCurrentLvl;
+    public Vector3 EnemySpawnPoint;
+
 
 }

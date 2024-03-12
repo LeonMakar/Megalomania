@@ -1,4 +1,3 @@
-using Cysharp.Threading.Tasks.Triggers;
 using TMPro;
 using UnityEngine;
 using Zenject;
@@ -31,7 +30,43 @@ public class SceneContextInstaller : MonoInstaller, IInitializable
         BindCitizenGenerator();
         BindInstallerInterface();
         BindMainBuildingCollider();
+        BindSoldierFactory();
+        BindEnemyFactory();
+        BindSoldierController();
+        BindEnemyController();
 
+    }
+
+    private void BindEnemyFactory()
+    {
+        Container
+            .BindFactory<Enemy, Enemy.Factory>()
+            .AsSingle()
+            .NonLazy();
+    }
+
+    private void BindSoldierFactory()
+    {
+        Container
+            .BindFactory<Soldier, Soldier.Factory>()
+            .AsSingle()
+            .NonLazy();
+    }
+
+    private void BindEnemyController()
+    {
+        Container
+            .Bind<EnemyController>()
+            .AsSingle()
+            .NonLazy();
+    }
+
+    private void BindSoldierController()
+    {
+        Container
+            .Bind<SoldierController>()
+            .AsSingle()
+            .NonLazy();
     }
 
     private void BindMainBuildingCollider()

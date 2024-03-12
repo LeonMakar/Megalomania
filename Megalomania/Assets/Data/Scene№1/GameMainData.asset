@@ -16,3 +16,6 @@ MonoBehaviour:
   WoodAddingValue: 1
   WoodAddingInterval: 1000
   StoneAddingInterval: 1000
+  MinutesForCurrentLvl: 1
+  EnemysForCurrentLvl: 3
+  EnemySpawnPoint: {x: 8.88, y: -1.38, z: 0}

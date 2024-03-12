@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
+using Zenject;
 
 public abstract class Building : MonoBehaviour, IPointerClickHandler
 {
@@ -15,23 +16,36 @@ public abstract class Building : MonoBehaviour, IPointerClickHandler
     public SpriteRenderer BuildingImage;
 
     private BuildingView _buildingView;
+    private SoldierController _soldierController;
+
+    public int StageIndex = -1;
+    public int WoodToUpgrade;
+    public int StoneToUpgrade;
+    public int CitizenToUpgrade;
+    public int SoldierToAdd;
 
 
     [Space(10), Header("Next Upgrades")]
     public List<ConstructionStage> ConstructionStages = new List<ConstructionStage>();
 
+    [Inject]
+    private void Construct(SoldierController soldierController)
+    {
+        _soldierController = soldierController;
+    }
     private void Start()
     {
         BuildingImage = GetComponent<SpriteRenderer>();
 
         _buildingView = new BuildingView(this);
     }
-    public void Upgrade()
+    public void UpgradeBuilding()
     {
         _buildingView.ChangeBuildingStage();
+        TrainSoldierAfterBuilding(SoldierToAdd);
     }
 
-
+    private void TrainSoldierAfterBuilding(int soldierAmmount) => _soldierController.CreateSoldier(soldierAmmount);
     public void OnPointerClick(PointerEventData eventData)
     {
         if (UpgradeButtone.gameObject.activeSelf)
@@ -50,6 +64,7 @@ public abstract class Building : MonoBehaviour, IPointerClickHandler
         public int WoodsForBuilding;
         public int StonesForBuilding;
         public int CitizensForBuilding;
+        public int SoldierToGet;
         public string Description;
     }
 }

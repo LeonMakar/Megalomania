@@ -1,15 +1,6 @@
-using UnityEngine;
-
-public class CitizenSimulatorFactory 
+public class CitizenSimulatorFactory : SimulatorFactory
 {
-    private Navigation _citizenSimulationGameObject;
-
-    public CitizenSimulatorFactory(Navigation navigation)
+    public CitizenSimulatorFactory(Navigation navigation) : base(navigation)
     {
-        _citizenSimulationGameObject = navigation;
-    }
-    public Navigation Create()
-    {
-        return GameObject.Instantiate(_citizenSimulationGameObject);
     }
 }

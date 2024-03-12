@@ -9,6 +9,5 @@ public class Navigation : MonoBehaviour
     public void SetNewPosition(Vector3 position)
     {
         agent.SetDestination(position);
-
     }
 }
