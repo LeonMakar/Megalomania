@@ -1,7 +1,8 @@
 public class WoodText : UiResoucres
 {
-    private void Awake()
+    private void Start()
     {
+        Storage.WoodInStorage.OnChange += SetNewText;
         ResourcesType = "Wood";
     }
 }

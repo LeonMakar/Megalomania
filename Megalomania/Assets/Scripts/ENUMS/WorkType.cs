@@ -1,6 +1,5 @@
 public enum WorkType
 {
     WoodWork,
-    StoneWork,
-    SolderWork
+    StoneWork
 }

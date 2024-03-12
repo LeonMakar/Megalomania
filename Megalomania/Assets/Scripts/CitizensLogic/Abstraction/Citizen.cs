@@ -1,41 +1,39 @@
 using Cysharp.Threading.Tasks;
 using System.Threading;
+using UnityEngine;
 using Zenject;
 
 public class Citizen
 {
-    private StoneText _stoneText;
-    private WoodText _woodText;
+    public ResourcesType GeneratingResourceType;
+
     private GameMainData _gameMainData;
     private CancellationTokenSource _cancellatinToken;
     private ResourcesStorage _resourcesStorage;
     private bool _canMining = true;
-    private ResourcesType _generatingType;
+    public Navigation _citizenNavigation;
 
 
-    public Citizen(StoneText stoneText, WoodText woodText, GameMainData gameMainData, GameToken gameToken, ResourcesStorage storage)
+    public Citizen(GameMainData gameMainData, GameToken gameToken, ResourcesStorage storage)
     {
-        _stoneText = stoneText;
-        _woodText = woodText;
         _gameMainData = gameMainData;
         _cancellatinToken = new CancellationTokenSource();
         _resourcesStorage = storage;
         gameToken.OnGameTokenDestroy += CancelAsyncMethods;
-
     }
+    public void AddToCitizenSimulator(Navigation navigation) => _citizenNavigation = navigation;
+    public void SetNewDestination(Vector3 vector3) => _citizenNavigation.SetNewPosition(vector3);
+    public void StopMining() => _canMining = false;
 
     public void SetWorkToCitizen(WorkType workType)
     {
         switch (workType)
         {
             case WorkType.WoodWork:
-                GainingResourcesAsync(_woodText, _gameMainData.WoodAddingInterval, _gameMainData.WoodAddingValue).Forget();
-
+                GainingResourcesAsync(ResourcesType.Wood, _gameMainData.WoodAddingInterval, _gameMainData.WoodAddingValue).Forget();
                 break;
             case WorkType.StoneWork:
-                GainingResourcesAsync(_stoneText, _gameMainData.StoneAddingInterval, _gameMainData.StoneAddingValue).Forget();
-                break;
-            case WorkType.SolderWork:
+                GainingResourcesAsync(ResourcesType.Stone, _gameMainData.StoneAddingInterval, _gameMainData.StoneAddingValue).Forget();
                 break;
         }
     }
@@ -51,25 +49,22 @@ public class Citizen
 
     public void CancelAsyncMethods() => _cancellatinToken.Cancel();
 
-    private async UniTask GainingResourcesAsync(UiResoucres uiResoucresType, int resourcesAddingDelay, float resourcesAddingValue)
+    private async UniTask GainingResourcesAsync(ResourcesType resourcesType, int resourcesAddingDelay, uint resourcesAddingValue)
     {
-        switch (uiResoucresType.GetType().Name)
+        switch (resourcesType)
         {
-            case nameof(StoneText):
-                _generatingType = ResourcesType.Stone;
+            case ResourcesType.Stone:
+                GeneratingResourceType = ResourcesType.Stone;
                 break;
-            case nameof(WoodText):
-                _generatingType = ResourcesType.Wood;
+            case ResourcesType.Wood:
+                GeneratingResourceType = ResourcesType.Wood;
                 break;
         }
         while (_canMining)
         {
             await UniTask.Delay(resourcesAddingDelay, true, PlayerLoopTiming.Update, _cancellatinToken.Token);
-            uiResoucresType.ResourcesCount += resourcesAddingValue;
-            _resourcesStorage.AddResource(_generatingType, resourcesAddingValue);
-            uiResoucresType.SetNewText();
+            _resourcesStorage.AddResource(GeneratingResourceType, resourcesAddingValue);
         }
-
     }
 
     public class Factory : PlaceholderFactory<Citizen> { }

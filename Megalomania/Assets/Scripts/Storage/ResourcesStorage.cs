@@ -1,23 +1,38 @@
 public class ResourcesStorage
 {
+    public ReactiveProperty<int> WoodInStorage { get; private set; } = new ReactiveProperty<int>();
+    public ReactiveProperty<int> StoneInStorage { get; private set; } = new ReactiveProperty<int>();
+    public ReactiveProperty<int> CitizenInStorage { get; private set; } = new ReactiveProperty<int>();
+    public ReactiveProperty<int> WarriorInStorage { get; private set; } = new ReactiveProperty<int>();
 
-    public float WoodInStorage { get; private set; }
-    public float StoneInStorage { get; private set; }
+    public ResourcesStorage(EventBus eventBus)
+    {
+        eventBus.Subscrube<OnAddedNewCitizenSignal>(AddCitizen);
+    }
 
-
-    public void AddResource(ResourcesType resourcesType, float ammount)
+    public void AddResource(ResourcesType resourcesType, uint ammount)
     {
         switch (resourcesType)
         {
             case ResourcesType.Wood:
-                WoodInStorage += ammount;
+                WoodInStorage.Value += (int)ammount;
                 break;
             case ResourcesType.Stone:
-                StoneInStorage += ammount;
+                StoneInStorage.Value += (int)ammount;
+                break;
+            case ResourcesType.Citizen:
+                CitizenInStorage.Value += (int)ammount;
+                break;
+            case ResourcesType.Warrior:
+                WarriorInStorage.Value += (int)ammount;
                 break;
             default:
                 throw new System.Exception("Incorrect ResorcesType");
         }
+    }
+    public void AddCitizen(OnAddedNewCitizenSignal signal)
+    {
+        CitizenInStorage.Value += signal.CitizenAmmount;
     }
 
 

@@ -1,13 +1,13 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName ="GameMainData",menuName = "ScriptableObjects")]
+[CreateAssetMenu(fileName ="GameMainData",menuName = "ScriptableObjects/GameMainData")]
 public class GameMainData : ScriptableObject
 {
     [Header("Resources adding value")]
     [Tooltip("How much wood will be mined at a time")]
-    public int StoneAddingValue;
+    public uint StoneAddingValue;
     [Tooltip("How much stone will be mined at a time")]
-    public int WoodAddingValue;
+    public uint WoodAddingValue;
 
     [Space(20),Header("Resources mining interval")]
 
