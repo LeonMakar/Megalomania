@@ -1,10 +1,7 @@
 using UnityEngine;
 public class BuildingView
 {
-    private int _stageIndex = -1;
-    private int _woodToUpgrade;
-    private int _stoneToUpgrade;
-    private int _citizenToUpgrade;
+
 
     private Building _building;
 
@@ -13,27 +10,28 @@ public class BuildingView
         _building = building;
 
 
-        _building.WoodUpgradeCount.text = _woodToUpgrade.ToString();
-        _building.StoneUpgradeCount.text = _stoneToUpgrade.ToString();
-        _building.CitizenUpgradeCount.text = _citizenToUpgrade.ToString();
+        _building.WoodUpgradeCount.text = _building.WoodToUpgrade.ToString();
+        _building.StoneUpgradeCount.text = _building.StoneToUpgrade.ToString();
+        _building.CitizenUpgradeCount.text = _building.CitizenToUpgrade.ToString();
     }
 
 
     public void ChangeBuildingStage()
     {
 
-        if (_building.ConstructionStages.Count > _stageIndex)
+        if (_building.ConstructionStages.Count > _building.StageIndex)
         {
-            _stageIndex++;
-            _building.BuildingImage.sprite = _building.ConstructionStages[_stageIndex].ConstructionFinalSprite;
-            _woodToUpgrade = _building.ConstructionStages[_stageIndex].WoodsForBuilding;
-            _stoneToUpgrade = _building.ConstructionStages[_stageIndex].StonesForBuilding;
-            _citizenToUpgrade = _building.ConstructionStages[_stageIndex].CitizensForBuilding;
-            _building.WoodUpgradeCount.text = _woodToUpgrade.ToString();
-            _building.StoneUpgradeCount.text = _stoneToUpgrade.ToString();
-            _building.CitizenUpgradeCount.text = _citizenToUpgrade.ToString();
+            _building.StageIndex++;
+            _building.BuildingImage.sprite = _building.ConstructionStages[_building.StageIndex].ConstructionFinalSprite;
+            _building.WoodToUpgrade = _building.ConstructionStages[_building.StageIndex].WoodsForBuilding;
+            _building.StoneToUpgrade = _building.ConstructionStages[_building.StageIndex].StonesForBuilding;
+            _building.CitizenToUpgrade = _building.ConstructionStages[_building.StageIndex].CitizensForBuilding;
+            _building.SoldierToAdd = _building.ConstructionStages[_building.StageIndex].SoldierToGet;
+            _building.WoodUpgradeCount.text = _building.WoodToUpgrade.ToString();
+            _building.StoneUpgradeCount.text = _building.StoneToUpgrade.ToString();
+            _building.CitizenUpgradeCount.text = _building.CitizenToUpgrade.ToString();
         }
-        if (_building.ConstructionStages.Count <= _stageIndex)
+        if (_building.ConstructionStages.Count <= _building.StageIndex)
         {
             _building.WoodUpgradeCount.text = string.Empty;
             _building.StoneUpgradeCount.text = string.Empty;
