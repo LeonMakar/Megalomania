@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
 
-public abstract class Area : MonoBehaviour, IPointerClickHandler
+public abstract class Area : MonoBehaviour, IDragTarget
 {
     [SerializeField] protected WorkType WorkType;
 
@@ -54,4 +54,21 @@ public abstract class Area : MonoBehaviour, IPointerClickHandler
         await UniTask.Delay(2000);
         Notation.text = string.Empty;
     }
+
+    public void OnDragEnd(Navigation navigation)
+    {
+
+    }
+
+    public GameObject GetGameObject()
+    {
+        return gameObject;
+    }
 }
+
+public interface IDragTarget
+{
+    void OnDragEnd(Navigation navigation);
+    GameObject GetGameObject();
+}
+

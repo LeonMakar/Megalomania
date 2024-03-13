@@ -8,7 +8,7 @@ public abstract class SimulatorFactory
     {
         _simulationGameObject = navigation;
     }
-    public Navigation Create()
+    public virtual Navigation Create()
     {
         return GameObject.Instantiate(_simulationGameObject);
     }

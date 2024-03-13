@@ -46,8 +46,8 @@ public class CitizenController
             var citizen = result;
             _workingCitizens.Add(result);
             result.ChangeWorkCondition(workType).Forget();
-            result.SetNewDestination(Calculation.GetRandomePointInsideCollider(workingArea));
-            _eventBus.Invoke(new OnSetWorkToCitizenSignal(false));
+            //result.SetNewDestination(Calculation.GetRandomePointInsideCollider(workingArea));
+            //_eventBus.Invoke(new OnSetWorkToCitizenSignal(false));
         }
         else
         {
@@ -69,7 +69,7 @@ public class CitizenController
                 FireCitizenFromHisWork(citizenInCurrentWork);
                 break;
         }
-        _eventBus.Invoke(new OnResetWorkOfCitizenSignal(false));
+        //_eventBus.Invoke(new OnResetWorkOfCitizenSignal(false));
     }
 
     private void FireCitizenFromHisWork(Citizen citizen)
@@ -83,7 +83,7 @@ public class CitizenController
         citizen.StopMining();
         _freeCitizens.Push(citizen);
         _workingCitizens.Remove(citizen);
-        citizen.SetNewDestination(Calculation.GetRandomePointInsideCollider(_mainBuildingCollider));
+        //citizen.SetNewDestination(Calculation.GetRandomePointInsideCollider(_mainBuildingCollider));
     }
     private async UniTaskVoid SetNewTextAsync(string text)
     {
