@@ -77,3 +77,4 @@ MonoBehaviour:
   _citizenSimulatorGameObject: {fileID: 8982239452462149383, guid: c5c734a213ffa3844a52961a0697743d, type: 3}
   _soldierSimulatorGameObject: {fileID: 6744128248114559387, guid: 974c9ce26402186408091d4f0ffcc013, type: 3}
   _enemySimulatorGameObject: {fileID: 6886559073692874984, guid: b90675d51fa13ee43b3c3895483255a0, type: 3}
+  _citizenIcon: {fileID: 2437665846942250933, guid: fb64f29185e44ce46aec97f5ac562dcb, type: 3}
