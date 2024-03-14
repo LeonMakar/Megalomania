@@ -1,14 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using Cysharp.Threading.Tasks;
+using System.Collections.Generic;
 
 public class EnemyController
 {
     private Enemy.Factory _enemFactory;
     private SoldierController _soldierController;
-    public List<Enemy> _enemys = new List<Enemy>();
+    public Dictionary<int, Enemy> _enemys = new Dictionary<int, Enemy>();
     private Stack<Soldier> _soldiers = new Stack<Soldier>();
     private Stack<Enemy> _freeEnemys = new Stack<Enemy>();
-    private bool _isEnemysMoreThenSoldiers;
+    //private bool _isEnemysMoreThenSoldiers;
+    private int _enemyID;
 
+    public int AllEnemyCount;
     public EnemyController(Enemy.Factory factory, SoldierController soldierController)
     {
         _enemFactory = factory;
@@ -22,24 +25,30 @@ public class EnemyController
         for (int i = 0; i < numberOfEnemyes; i++)
         {
             var enemy = _enemFactory.Create();
-            _enemys.Add(enemy);
+            AllEnemyCount++;
+            enemy.EnemyID = _enemyID;
+            enemy.SetIDToEnemySimulator(_enemyID);
+            _enemyID++;
+            _enemys.Add(enemy.EnemyID, enemy);
             _freeEnemys.Push(enemy);
             if (IfPossibleSetDestinationToSoldier(enemy)) { }
             else
             {
                 FindFreeSoldiers();
                 IfPossibleSetDestinationToSoldier(enemy);
-                _isEnemysMoreThenSoldiers = true;
+                //_isEnemysMoreThenSoldiers = true;
             }
         }
-        if (!_isEnemysMoreThenSoldiers)
+
+        _soldiers.Clear();
+    }
+
+    public void KillEnemyUnderID(int id)
+    {
+        if (_enemys.ContainsKey(id))
         {
-            int i = 0;
-            foreach (var soldier in _soldiers)
-            {
-                soldier.SetNewPositionForSoldier(_enemys[i].GetFighterPosition());
-                i++;
-            }
+            _enemys.Remove(id);
+            AllEnemyCount--;
         }
     }
 
@@ -47,7 +56,7 @@ public class EnemyController
     {
         foreach (var soldier in _soldierController.GetSoldiers())
         {
-            _soldiers.Push(soldier);
+            _soldiers.Push(soldier.Value);
         }
     }
 

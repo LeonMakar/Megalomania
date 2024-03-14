@@ -5,8 +5,10 @@ public class SoldierController
 {
     private Soldier.Factory _soldierFactory;
     private Collider2D _mainBuildingCollider;
+    private int _soldierID;
+    public int SoldiersKilled;
 
-    private List<Soldier> _soldiers = new List<Soldier>();
+    private Dictionary<int, Soldier> _soldiers = new Dictionary<int, Soldier>();
 
     public SoldierController(Soldier.Factory soldierFactory, Collider2D castleColldier)
     {
@@ -14,15 +16,25 @@ public class SoldierController
         _mainBuildingCollider = castleColldier;
     }
 
-    public List<Soldier> GetSoldiers() => _soldiers;
+    public Dictionary<int, Soldier> GetSoldiers() => _soldiers;
 
+    public void KillSoldierUnderID(int soldierID)
+    {
+        if (_soldiers.ContainsKey(soldierID))
+        {
+            _soldiers.Remove(soldierID);
+            SoldiersKilled++;
+        }
+    }
 
     public void CreateSoldier(int soldiersAmmount)
     {
         for (int i = 0; i < soldiersAmmount; i++)
         {
             var soldiers = _soldierFactory.Create();
-            _soldiers.Add(soldiers);
+            soldiers.SetIDToSoldier(_soldierID);
+            _soldierID++;
+            _soldiers.Add(soldiers.SoldierID, soldiers);
             soldiers.SetNewPositionForSoldier(Calculation.GetRandomePointInsideCollider(_mainBuildingCollider));
         }
     }

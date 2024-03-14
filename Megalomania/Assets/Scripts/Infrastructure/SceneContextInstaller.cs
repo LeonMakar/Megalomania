@@ -12,7 +12,8 @@ public class SceneContextInstaller : MonoInstaller, IInitializable
     [SerializeField] private CitizenText _citizenText;
     [SerializeField] private Collider2D _mainBuildingCollider;
     [SerializeField] private Transform _parentObjectForIcons;
-    [SerializeField] private GameObject _citizenIconPrefab;
+    [SerializeField] private GameObject _gameOverPanel;
+    [SerializeField] private GameStateMachine _gameStateMachine;
 
     public void Initialize()
     {
@@ -36,9 +37,28 @@ public class SceneContextInstaller : MonoInstaller, IInitializable
         BindEnemyFactory();
         BindSoldierController();
         BindEnemyController();
-
+        BindGameOverPanel();
+        BindGameStateMachine();
 
     }
+
+    private void BindGameStateMachine()
+    {
+        Container
+            .Bind<GameStateMachine>()
+            .FromInstance(_gameStateMachine)
+            .AsSingle()
+            .NonLazy();
+    }
+
+    private void BindGameOverPanel()
+    {
+        Container
+            .Bind<GameObject>()
+            .FromInstance(_gameOverPanel)
+            .AsSingle();
+    }
+
     private void BindEnemyFactory()
     {
         Container
