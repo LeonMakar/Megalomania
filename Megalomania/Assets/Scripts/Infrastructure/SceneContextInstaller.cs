@@ -23,13 +23,13 @@ public class SceneContextInstaller : MonoInstaller, IInitializable
     public override void InstallBindings()
     {
         BindGameMainData();
+        BindResourcesStorage();
         BindCitizenGeneratorData();
         BindNotationText();
         BindCitizensController();
         BindCitizenFactory();
         BindGameToken();
         BindEventBus();
-        BindResourcesStorage();
         BindCitizenGenerator();
         BindInstallerInterface();
         BindMainBuildingCollider();
