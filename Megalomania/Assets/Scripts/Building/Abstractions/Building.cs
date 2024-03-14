@@ -18,11 +18,11 @@ public abstract class Building : MonoBehaviour, IPointerClickHandler
     private BuildingView _buildingView;
     private SoldierController _soldierController;
 
-    public int StageIndex = -1;
-    public int WoodToUpgrade;
-    public int StoneToUpgrade;
-    public int CitizenToUpgrade;
-    public int SoldierToAdd;
+    [HideInInspector] public int StageIndex = -1;
+    [HideInInspector] public int WoodToUpgrade;
+    [HideInInspector] public int StoneToUpgrade;
+    [HideInInspector] public int CitizenToUpgrade;
+    [HideInInspector] public int SoldierToAdd;
 
 
     [Space(10), Header("Next Upgrades")]
@@ -38,6 +38,7 @@ public abstract class Building : MonoBehaviour, IPointerClickHandler
         BuildingImage = GetComponent<SpriteRenderer>();
 
         _buildingView = new BuildingView(this);
+        UpgradeBuilding();
     }
     public void UpgradeBuilding()
     {
