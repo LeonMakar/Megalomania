@@ -1,5 +1,6 @@
 ﻿using Cysharp.Threading.Tasks;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class EnemyController
 {
@@ -7,7 +8,6 @@ public class EnemyController
     private SoldierController _soldierController;
     public Dictionary<int, Enemy> _enemys = new Dictionary<int, Enemy>();
     private Stack<Soldier> _soldiers = new Stack<Soldier>();
-    private Stack<Enemy> _freeEnemys = new Stack<Enemy>();
     //private bool _isEnemysMoreThenSoldiers;
     private int _enemyID;
 
@@ -30,7 +30,6 @@ public class EnemyController
             enemy.SetIDToEnemySimulator(_enemyID);
             _enemyID++;
             _enemys.Add(enemy.EnemyID, enemy);
-            _freeEnemys.Push(enemy);
             if (IfPossibleSetDestinationToSoldier(enemy)) { }
             else
             {
@@ -66,6 +65,7 @@ public class EnemyController
         if (soldier != null)
         {
             enemy.SetDestinationForEnemy(soldier.GetFighterPosition());
+            Debug.Log(soldier.GetFighterPosition());
             return true;
         }
         else

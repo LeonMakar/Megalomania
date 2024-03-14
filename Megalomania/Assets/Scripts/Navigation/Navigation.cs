@@ -10,4 +10,6 @@ public class Navigation : MonoBehaviour
     {
         agent.SetDestination(position);
     }
+
+    public void DestroyHimSelf() => Destroy(gameObject);
 }

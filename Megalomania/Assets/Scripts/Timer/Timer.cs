@@ -63,7 +63,12 @@ public class Timer : MonoBehaviour
             _gameStateMachine.SetGameOver();
         else
         {
-            _soldierController.CreateSoldier(_soldierController.SoldiersKilled);
+            for (int i = 0; i < _soldierController.SoldiersKilled; i++)
+            {
+                _soldierController.CreateSoldier(1);
+                await UniTask.Delay(2000, false, PlayerLoopTiming.Update, _token.destroyCancellationToken);
+            }
+            _soldierController.SoldiersKilled = 0;
         }
 
         if (isLastWave)

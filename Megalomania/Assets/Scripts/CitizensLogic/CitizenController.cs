@@ -13,15 +13,17 @@ public class CitizenController
     private CitizenSimulatorFactory _citizenSimulatorFactory;
     private Collider2D _mainBuildingCollider;
     private TextMeshProUGUI _notation;
+    private readonly GameToken gameToken;
 
     public CitizenController(Citizen.Factory factory, EventBus eventBus, CitizenSimulatorFactory citizenSimulationFactory,
-        Collider2D castleCollider, TextMeshProUGUI notation)
+        Collider2D castleCollider, TextMeshProUGUI notation, GameToken gameToken)
     {
         _citizenFactory = factory;
         _eventBus = eventBus;
         _citizenSimulatorFactory = citizenSimulationFactory;
         _mainBuildingCollider = castleCollider;
         _notation = notation;
+        this.gameToken = gameToken;
     }
 
     public void AddNewCitizen()
@@ -29,8 +31,42 @@ public class CitizenController
         var citizen = _citizenFactory.Create();
         _freeCitizens.Push(citizen);
         citizen.AddToCitizenSimulator(_citizenSimulatorFactory.Create());
-        citizen.SetNewDestination(Calculation.GetRandomePointInsideCollider(_mainBuildingCollider));
+        citizen.SetNewDestination(Calculation.GetRandomePointAroundCollider(_mainBuildingCollider));
         _eventBus.Invoke(new OnAddedNewCitizenSignal(1));
+    }
+
+    public void UpgradeBuilding(int CitizenForUpgrade)
+    {
+        var citizensToDestroy = new List<Citizen>();
+        _eventBus.Invoke(new OnAddedNewCitizenSignal(-CitizenForUpgrade));
+        for (int i = 0; i < CitizenForUpgrade; i++)
+        {
+            if (_freeCitizens.Count > 0)
+            {
+                var cititzen = _freeCitizens.Pop();
+                citizensToDestroy.Add(cititzen);
+                cititzen.SetNewDestination(Calculation.GetRandomePointAroundCollider(_mainBuildingCollider));
+            }
+            else if (_workingCitizens.Count > 0)
+            {
+                var citizen = _workingCitizens.FirstOrDefault();
+                citizen.StopMining();
+                citizen.SetNewDestination(Calculation.GetRandomePointAroundCollider(_mainBuildingCollider));
+                _workingCitizens.Remove(citizen);
+                citizensToDestroy.Add(citizen);
+            }
+        }
+
+        WaitBeforeDeleteSync(citizensToDestroy).Forget();
+    }
+
+    private async UniTaskVoid WaitBeforeDeleteSync(List<Citizen> citizensToDestroy)
+    {
+        await UniTask.Delay(4000, false, PlayerLoopTiming.Update, gameToken.destroyCancellationToken);
+        foreach (var Citizen in citizensToDestroy)
+        {
+            Citizen._citizenNavigation.DestroyHimSelf();
+        }
     }
 
     public int GetFreeCitizens()
