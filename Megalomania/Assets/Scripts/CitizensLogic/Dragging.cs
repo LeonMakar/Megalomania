@@ -60,7 +60,7 @@ public class Dragging : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDrag
         eventData.pointerEnter.TryGetComponent(out IDragTarget area);
         if (area != null)
         {
-            _parentNavigation.SetNewPosition(Calculation.GetRandomePointInsideCollider(area.GetGameObject().GetComponent<Collider2D>()));
+            _parentNavigation.SetNewPosition(Calculation.GetRandomePointInsideCollider(area.GetBoxCollider()));
             _lastDragTarget = area;
             SetWorkersToArea();
         }

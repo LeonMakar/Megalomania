@@ -7,13 +7,15 @@ using Zenject;
 public abstract class Area : MonoBehaviour, IDragTarget
 {
     [SerializeField] protected WorkType WorkType;
+    [SerializeField] protected BoxCollider2D ChildrenAreaOfWorking;
 
     protected TextMeshProUGUI Notation;
     protected CitizenController CitizenConroller;
     protected bool _isCitizenSelected = false;
-    private bool _isCanResetWork = false;
     protected EventBus EventBus;
     protected Collider2D Collider2d;
+
+    private bool _isCanResetWork = false;
 
     private void Awake()
     {
@@ -40,7 +42,6 @@ public abstract class Area : MonoBehaviour, IDragTarget
 
         if (_isCanResetWork)
             ResetWork();
-
     }
 
 
@@ -64,11 +65,18 @@ public abstract class Area : MonoBehaviour, IDragTarget
     {
         return gameObject;
     }
+
+    public BoxCollider2D GetBoxCollider()
+    {
+        return ChildrenAreaOfWorking;
+    }
 }
 
 public interface IDragTarget
 {
     void OnDragEnd(Navigation navigation);
     GameObject GetGameObject();
+
+    BoxCollider2D GetBoxCollider();
 }
 

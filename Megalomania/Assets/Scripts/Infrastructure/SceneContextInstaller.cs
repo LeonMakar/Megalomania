@@ -11,7 +11,7 @@ public class SceneContextInstaller : MonoInstaller, IInitializable
     [SerializeField] private CitizenGeneratorData _citizenGeneratorData;
     [SerializeField] private CitizenText _citizenText;
     [SerializeField] private Collider2D _mainBuildingCollider;
-    [SerializeField] private Transform _parentObjectForIcons;
+    //[SerializeField] private Transform _parentObjectForIcons;
     [SerializeField] private GameObject _gameOverPanel;
     [SerializeField] private GameStateMachine _gameStateMachine;
 
