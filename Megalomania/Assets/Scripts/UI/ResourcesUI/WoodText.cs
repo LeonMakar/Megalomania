@@ -4,5 +4,7 @@ public class WoodText : UiResoucres
     {
         Storage.WoodInStorage.OnChange += SetNewText;
         ResourcesType = "Wood";
+        SetNewText(0);
+
     }
 }
